@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Products from "./pages/Products";
+import ItemPage from "./pages/ItemPage";
 
 const client = new QueryClient();
 
@@ -24,6 +25,11 @@ root.render(
             path="/Products"
             element={<Products />}
           />
+          <Route
+            path="/page/item/:id"
+            element={<ItemPage />}
+          />
+
           <Route
             path="/About"
             element={<About />}
