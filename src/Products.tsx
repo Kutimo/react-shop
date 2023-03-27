@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "usehooks-ts";
-// import { useLocalStorage } from "usehooks-ts";
+// import { storedValue, setValue } from "./hooks/useLocalStorage";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+
 import { useQuery } from "react-query";
 
 // // components
@@ -28,8 +30,15 @@ const Products = () => {
 
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
 
+  const [storedCartItems, setStoredCartItems] = useLocalStorage("cartItems", [] as CartItemType[]);
+
+  useEffect(() => {
+    setCartItems(storedCartItems);
+  }, [storedCartItems]);
+
+  // useEffect(() => setValue.products);
   // useEffect(() => {
-  //   localStorage.setItems("cartItem", JSON.stringify(cartItems));
+  //   useLocalStorage.setValue("cartItem", JSON.stringify(cartItems));
   // }, [cartItems]);
 
   // useRef hook to access state of side menu
