@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useOnClickOutside } from "usehooks-ts";
-// import { storedValue, setValue } from "./hooks/useLocalStorage";
-import { useLocalStorage } from "./hooks/useLocalStorage";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 import { useQuery } from "react-query";
 
-// // components
-import Item from "./components/cart/Item";
-import Cart from "./components/cart/Cart";
-import cartIcon from "./assets/icons/cartIcon.svg";
+// components
+import Item from "../components/cart/Item";
+import Cart from "../components/cart/Cart";
+import cartIcon from "../assets/icons/cartIcon.svg";
 
 // explicit definition of types as variable
 export type CartItemType = {
@@ -27,19 +26,22 @@ const getProducts = async (): Promise<CartItemType[]> =>
 const Products = () => {
   // Use states for cart open and close, and cart item state value and function to update it
   const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
 
-  const [cartItems, setCartItems] = useState([] as CartItemType[]);
+  // Get the stored cart items from local storage using useLocalStorage hook
+  const [storedCartItems, setStoredCartItems] = useLocalStorage<CartItemType[]>("cartItems", []);
 
-  const [storedCartItems, setStoredCartItems] = useLocalStorage("cartItems", [] as CartItemType[]);
-
+  // Update the cart items state with the stored cart items on mount
   useEffect(() => {
-    setCartItems(storedCartItems);
-  }, [storedCartItems]);
+    if (storedCartItems) {
+      setCartItems(storedCartItems);
+    }
+  }, []);
 
-  // useEffect(() => setValue.products);
-  // useEffect(() => {
-  //   useLocalStorage.setValue("cartItem", JSON.stringify(cartItems));
-  // }, [cartItems]);
+  // Update the stored cart items on every change in the cartItems state
+  useEffect(() => {
+    setStoredCartItems(cartItems);
+  }, [cartItems, setStoredCartItems]);
 
   // useRef hook to access state of side menu
   const cartRef = useRef(null);
@@ -53,7 +55,7 @@ const Products = () => {
   // Adds products to cart
   const handleAddToCart = (clickedItem: CartItemType) => {
     setCartItems((previous) => {
-      // 1. is the item already in the cart?
+      // is the item already in the cart?
       const isItemInCart = previous.find((item) => item.id === clickedItem.id);
 
       if (isItemInCart) {
@@ -76,6 +78,9 @@ const Products = () => {
       }, [] as CartItemType[])
     );
   };
+
+  if (isLoading) return <div>Loading</div>;
+  if (error) return <div>Something went wrong..</div>;
   // TODO: console
   // console.log(cartItems);
   if (isLoading) return <div>Loading</div>;

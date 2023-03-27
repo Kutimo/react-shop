@@ -1,12 +1,12 @@
 // types
-import { CartItemType } from "../../Products";
+import { CartItemType } from "../../pages/Products";
 
 type Props = {
   item: CartItemType;
   handleAddToCart: (clickedItem: CartItemType) => void;
 };
-// Functional component w/ props of item and handleAddToCart. 
-// This is what gets called and returned with a map method in products 
+// Functional component w/ props of item and handleAddToCart.
+// This is what gets called and returned with a map method in products
 const Item: React.FC<Props> = ({ item, handleAddToCart }) => (
   <div className="flex justify-between flex-col border-2 border-slate-200 h-auto max-w-xs shadow-lg">
     <a

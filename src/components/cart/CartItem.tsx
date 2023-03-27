@@ -1,5 +1,5 @@
 //types
-import { CartItemType } from "../../Products";
+import { CartItemType } from "../../pages/Products";
 
 type Props = {
   item: CartItemType;
@@ -31,7 +31,7 @@ const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => (
       </div>
     </div>
     <img
-      className="w-24 object-cover "
+      className="w-24 object-cover"
       src={item.image}
       alt={item.title}
     />
