@@ -1,6 +1,6 @@
 import CartItem from "./CartItem";
 // Types
-import { CartItemType } from "../../pages/Products";
+import { CartItemType } from "../cart/types/CartItemTypes";
 
 type Props = {
   cartItems: CartItemType[];

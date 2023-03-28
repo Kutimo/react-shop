@@ -1,5 +1,5 @@
 // types
-import { CartItemType } from "../../pages/Products";
+import { CartItemType } from "../cart/types/CartItemTypes";
 import { Link } from "react-router-dom";
 
 type Props = {

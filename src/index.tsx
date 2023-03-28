@@ -29,7 +29,6 @@ root.render(
             path="/page/item/:id"
             element={<ItemPage />}
           />
-
           <Route
             path="/About"
             element={<About />}

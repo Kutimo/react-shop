@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import NavBar from "../components/NavBar";
-import { CartItemType } from "./Products";
+import NavBar from "../layout/NavBar";
+import { CartItemType } from "../components/cart/types/CartItemTypes";
 
 export default function ItemPage() {
   const { id } = useParams<{ id: string }>();
@@ -27,45 +27,23 @@ export default function ItemPage() {
                 <img
                   src={item?.image}
                   className="w-3/4 relative z-10 p-4"
-                  alt=""
+                  alt={item?.description}
                 />
                 <div className="border-4 border-gray-500 absolute top-10 bottom-10 left-10 right-10 z-0"></div>
               </div>
             </div>
             <div className="w-full md:w-1/2 px-10">
               <div className="mb-10">
-                <h1 className="font-bold uppercase text-2xl mb-5">
-                  Mens's Ragged <br />
-                  Waterproof Jacket
-                </h1>
+                <h1 className="font-bold uppercase text-2xl mb-5">{item?.title}</h1>
                 <p className="text-sm">{item?.description}</p>
               </div>
-              <div>
-                <div className="inline-block align-bottom mr-5">
-                  <span className="text-2xl leading-none align-baseline">$</span>
-                  <span className="font-bold text-5xl leading-none align-baseline">59</span>
-                  <span className="text-2xl leading-none align-baseline">.99</span>
-                </div>
-                <div className="inline-block align-bottom">
-                  <button className="bg-yellow-300 opacity-75 hover:opacity-100 text-yellow-900 hover:text-gray-900 rounded-full px-10 py-2 font-semibold">
-                    <i className="mdi mdi-cart -ml-2 mr-2"></i> BUY NOW
-                  </button>
-                </div>
-              </div>
+              <span className="font-bold text-4xl inline-block mr-5 leading-none align-baseline">${item?.price}</span>
+              <button className="bg-yellow-300 opacity-75 hover:opacity-100 inline-block align-bottom text-yellow-900 hover:text-gray-900 rounded-full px-10 py-2 font-semibold">
+                BUY NOW
+              </button>
             </div>
           </div>
         </div>
-
-        {/* <h1>{item?.title}</h1>
-        <img
-          className="h-72 w-auto"
-          src={item?.image}
-          alt={item?.description}
-        />
-        <div>
-          <p>{item?.description}</p>
-          <p>${item?.price}</p>
-        </div> */}
       </main>
     </>
   );

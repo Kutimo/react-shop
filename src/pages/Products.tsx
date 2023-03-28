@@ -1,24 +1,24 @@
 import { useState, useRef, useEffect } from "react";
+
+// Cart Types:
+import { CartItemType } from "../components/cart/types/CartItemTypes";
+
+// Hooks
 import { useOnClickOutside } from "usehooks-ts";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+
+import { useLocalStorage } from "../components/cart/hooks/useLocalStorage";
+
+import useCart from "../components/cart/hooks/useCart";
 
 import { useQuery } from "react-query";
 
 // components
 import Item from "../components/cart/Item";
 import Cart from "../components/cart/Cart";
+
+//Icons
 import cartIcon from "../assets/icons/cartIcon.svg";
 
-// explicit definition of types as variable
-export type CartItemType = {
-  id: number;
-  category: string;
-  description: string;
-  image: string;
-  price: number;
-  title: string;
-  amount: number;
-};
 
 const getProducts = async (): Promise<CartItemType[]> =>
   await (await fetch("https://fakestoreapi.com/products")).json();
@@ -26,7 +26,8 @@ const getProducts = async (): Promise<CartItemType[]> =>
 const Products = () => {
   // Use states for cart open and close, and cart item state value and function to update it
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+
+  const { cartItems, setCartItems, handleAddToCart, handleRemoveFromCart } = useCart();
 
   // Get the stored cart items from local storage using useLocalStorage hook
   const [storedCartItems, setStoredCartItems] = useLocalStorage<CartItemType[]>("cartItems", []);
@@ -52,32 +53,6 @@ const Products = () => {
 
   const getTotalItems = (items: CartItemType[]) => items.reduce((ack: number, item) => ack + item.amount, 0);
 
-  // Adds products to cart
-  const handleAddToCart = (clickedItem: CartItemType) => {
-    setCartItems((previous) => {
-      // is the item already in the cart?
-      const isItemInCart = previous.find((item) => item.id === clickedItem.id);
-
-      if (isItemInCart) {
-        return previous.map((item) => (item.id === clickedItem.id ? { ...item, amount: item.amount + 1 } : item));
-      }
-      // first time item is added
-      return [...previous, { ...clickedItem, amount: 1 }];
-    });
-  };
-
-  const handleRemoveFromCart = (id: number) => {
-    setCartItems((previous) =>
-      previous.reduce((ack, item) => {
-        if (item.id === id) {
-          if (item.amount === 1) return ack;
-          return [...ack, { ...item, amount: item.amount - 1 }];
-        } else {
-          return [...ack, item];
-        }
-      }, [] as CartItemType[])
-    );
-  };
 
   if (isLoading) return <div>Loading</div>;
   if (error) return <div>Something went wrong..</div>;
